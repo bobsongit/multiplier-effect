@@ -14,25 +14,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install npm packages
-        run: npm install
-
-      - name: Find and copy library files to lib/
+      - name: Download library files directly
         run: |
           mkdir -p lib
-          echo "--- aframe  package contents ---"
-          find node_modules/aframe -name "*.min.js" | head -20
-          echo "--- ar.js package contents ---"
-          find node_modules/@ar-js-org -name "*.js" | grep -i nft | head -20
-          echo "--- copying ---"
-          cp node_modules/aframe/dist/aframe-v1.3.0.min.js lib/aframe.min.js
-          cp $(find node_modules/@ar-js-org -name "aframe-ar-nft.js" | head -1) lib/aframe-ar-nft.js
-          echo "Files copied:"
+          curl -L "https://aframe.io/releases/1.3.0/aframe.min.js" -o lib/aframe.min.js
+          curl -L "https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js" -o lib/aframe-ar-nft.js
+          echo "Downloaded files:"
           ls -lh lib/
 
       - name: Commit lib/ files
@@ -40,4 +27,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add lib/
-          git diff --staged --quiet && echo "No changes" || (git commit -m "Auto: add bundled lib files" && git push)
+          git diff --staged --quiet && echo "No changes" || (git commit -m "Auto: download correct lib files" && git push)
