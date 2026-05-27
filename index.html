@@ -213,6 +213,7 @@
       <button class="layer-btn" id="btn-pink"   onclick="toggleLayer('pink')">🩷 Layer 2</button>
       <button class="layer-btn" id="btn-purple" onclick="toggleLayer('purple')">🟣 Layer 3</button>
     </div>
+    <button class="layer-btn" id="btn-camera" onclick="testCamera()" style="--col:#facc15; margin-top:4px;">📷 Test Camera</button>
   </div>
 
   <!-- ── A-Frame Scene ── -->
@@ -333,6 +334,22 @@
       navigator.permissions.query({ name: 'camera' }).then(r => {
         log('Camera permission state: ' + r.state, r.state === 'granted' ? 'info' : 'warn');
       }).catch(e => log('Permission query failed: ' + e, 'warn'));
+    }
+
+    // ── Manual camera test ──
+    function testCamera() {
+      log('Requesting camera manually...', 'info');
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(stream => {
+          log('Camera granted! Tracks: ' + stream.getVideoTracks().length, 'info');
+          // Stop the test stream so AR.js can use the camera
+          stream.getTracks().forEach(t => t.stop());
+          log('Test stream stopped – AR.js should now initialise', 'info');
+          document.getElementById('btn-camera').textContent = '✓ Camera OK';
+        })
+        .catch(err => {
+          log('Camera ERROR: ' + err.name + ' – ' + err.message, 'err');
+        });
     }
 
     // ── Layer state ──
