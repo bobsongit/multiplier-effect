@@ -139,8 +139,8 @@
   </a-scene>
 
   <!-- Load A-Frame AFTER the scene markup, then run our code -->
-  <script src="lib/aframe.min.js"></script>
-  <script src="lib/aframe-ar-nft.js"></script>
+  <script src="lib/aframe2.min.js"></script>
+  <script src="lib/aframe-ar-nft2.js"></script>
 
   <script>
     // ── Debug console ──
@@ -281,7 +281,7 @@
     log('Script ready, waiting for A-Frame...', 'info');
 
     // Test if lib files are reachable
-    ['lib/aframe.min.js', 'lib/aframe-ar-nft.js'].forEach(function(path) {
+    ['lib/aframe2.min.js', 'lib/aframe-ar-nft2.js'].forEach(function(path) {
       fetch(path)
         .then(function(r) {
           log(path + ' → HTTP ' + r.status + ' (size: ' + r.headers.get('content-length') + ')', r.ok ? 'info' : 'err');
