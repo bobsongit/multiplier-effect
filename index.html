@@ -372,7 +372,13 @@
     });
 
     // ── White-pixel removal ──
-    AFRAME.registerComponent('remove-white', {
+    // Poll until AFRAME is available (handles async script loading)
+    function registerWhenReady() {
+      if (typeof AFRAME === 'undefined') {
+        setTimeout(registerWhenReady, 50);
+        return;
+      }
+      AFRAME.registerComponent('remove-white', {
       schema: { threshold: { default: 230 } },
       init() {
         this.el.addEventListener('materialtextureloaded', () => {
@@ -408,7 +414,9 @@
         mat.needsUpdate = true;
         log('White removal done for ' + this.el.id, 'info');
       }
-    });
+      }); // end registerComponent
+    } // end registerWhenReady
+    registerWhenReady();
 
     scene.addEventListener('loaded', () => {
       log('Applying white-removal to layers', 'info');
