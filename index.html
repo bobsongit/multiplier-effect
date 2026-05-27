@@ -273,6 +273,7 @@
     <a-entity camera></a-entity>
   </a-scene>
 
+
   <script>
     // ── On-screen debug console ──
     const dbg = document.getElementById('debug-panel');
@@ -371,8 +372,6 @@
     });
 
     // ── White-pixel removal ──
-    // Defer until all scripts loaded so AFRAME global exists
-    window.addEventListener('load', function() {
     AFRAME.registerComponent('remove-white', {
       schema: { threshold: { default: 230 } },
       init() {
@@ -418,7 +417,7 @@
         if (el) el.setAttribute('remove-white', 'threshold: 235');
       });
     });
-    }); // end window load
+
   </script>
 </body>
 </html>
