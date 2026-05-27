@@ -279,6 +279,19 @@
     });
 
     log('Script ready, waiting for A-Frame...', 'info');
+
+    // Check if AFRAME loads within 5 seconds
+    var aframeCheckCount = 0;
+    var aframeChecker = setInterval(function() {
+      aframeCheckCount++;
+      if (typeof AFRAME !== 'undefined') {
+        log('AFRAME global found after ' + (aframeCheckCount * 500) + 'ms', 'info');
+        clearInterval(aframeChecker);
+      } else if (aframeCheckCount >= 10) {
+        log('AFRAME never defined after 5s – script failed to load', 'err');
+        clearInterval(aframeChecker);
+      }
+    }, 500);
   </script>
 </body>
 </html>
