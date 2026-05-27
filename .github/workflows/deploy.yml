@@ -23,13 +23,13 @@ jobs:
           # aframe 1.6.0 - version used in official AR.js examples
           npm pack aframe@1.6.0
           tar -xzf aframe-1.6.0.tgz
-          cp package/dist/aframe-v1.6.0.min.js vendor/aframe.min.js
+          cp package/dist/aframe-v1.6.0.min.js vendor/aframe-160.min.js
           rm -rf package aframe-1.6.0.tgz
 
           # AR.js NFT latest
           npm pack @ar-js-org/ar.js@3.4.5
           tar -xzf ar-js-org-ar.js-3.4.5.tgz
-          cp package/aframe/build/aframe-ar-nft.js vendor/arjs-nft.js
+          cp package/aframe/build/aframe-ar-nft.js vendor/arjs-nft-345.js
           rm -rf package ar-js-org-ar.js-3.4.5.tgz
 
           echo "vendor/ contents:"
