@@ -139,8 +139,8 @@
   </a-scene>
 
   <!-- Load A-Frame AFTER the scene markup, then run our code -->
-  <script src="lib/aframe.min.js"></script>
-  <script src="lib/aframe-ar-nft.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
   <script>
     // ── Debug console ──
@@ -280,7 +280,18 @@
 
     log('Script ready, waiting for A-Frame...', 'info');
 
-    // Test if  NFT descriptor files are reachable
+    // Test if lib files are reachable
+    ['lib/aframe.min.js', 'lib/aframe-ar-nft.js'].forEach(function(path) {
+      fetch(path)
+        .then(function(r) {
+          log(path + ' → HTTP ' + r.status + ' (size: ' + r.headers.get('content-length') + ')', r.ok ? 'info' : 'err');
+        })
+        .catch(function(e) {
+          log(path + ' → FETCH ERROR: ' + e.message, 'err');
+        });
+    });
+
+    // Test if NFT descriptor files are reachable
     ['assets/poster.fset', 'assets/poster.fset3', 'assets/poster.iset'].forEach(function(path) {
       fetch(path)
         .then(function(r) {
