@@ -280,6 +280,14 @@
 
     log('Script ready, waiting for A-Frame...', 'info');
 
+    // Check actual file content, not just size
+    fetch('vendor/aframe.min.js')
+      .then(function(r) { return r.text(); })
+      .then(function(text) {
+        log('aframe.min.js first 80 chars: ' + text.slice(0, 80), 'info');
+        log('Contains AFRAME string: ' + text.includes('AFRAME'), 'info');
+      });
+
     // Test if lib files are reachable
     ['vendor/aframe.min.js', 'vendor/arjs-nft.js'].forEach(function(path) {
       fetch(path)
