@@ -280,6 +280,17 @@
 
     log('Script ready, waiting for A-Frame...', 'info');
 
+    // Test if NFT descriptor files are reachable
+    ['assets/poster.fset', 'assets/poster.fset3', 'assets/poster.iset'].forEach(function(path) {
+      fetch(path)
+        .then(function(r) {
+          log(path + ' → HTTP ' + r.status + ' (' + r.headers.get('content-type') + ')', r.ok ? 'info' : 'err');
+        })
+        .catch(function(e) {
+          log(path + ' → FETCH ERROR: ' + e.message, 'err');
+        });
+    });
+
     // Check if AFRAME loads within 5 seconds
     var aframeCheckCount = 0;
     var aframeChecker = setInterval(function() {
