@@ -139,8 +139,8 @@
   </a-scene>
 
   <!-- Load A-Frame AFTER the scene markup, then run our code -->
-  <script src="vendor/aframe.min.js"></script>
-  <script src="vendor/arjs-nft.js"></script>
+  <script src="vendor/aframe-160.min.js"></script>
+  <script src="vendor/arjs-nft-345.js"></script>
 
   <script>
     // ── Debug console ──
@@ -281,7 +281,7 @@
     log('Script ready, waiting for A-Frame...', 'info');
 
     // Check actual file content, not just size
-    fetch('vendor/aframe.min.js')
+    fetch('vendor/aframe-160.min.js')
       .then(function(r) { return r.text(); })
       .then(function(text) {
         log('aframe.min.js first 80 chars: ' + text.slice(0, 80), 'info');
@@ -289,7 +289,7 @@
       });
 
     // Test if lib files are reachable
-    ['vendor/aframe.min.js', 'vendor/arjs-nft.js'].forEach(function(path) {
+    ['vendor/aframe-160.min.js', 'vendor/arjs-nft-345.js'].forEach(function(path) {
       fetch(path)
         .then(function(r) {
           log(path + ' → HTTP ' + r.status + ' (size: ' + r.headers.get('content-length') + ')', r.ok ? 'info' : 'err');
