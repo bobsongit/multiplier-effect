@@ -171,6 +171,16 @@
       statusEl.textContent = 'Point at the poster…';
     });
 
+    // Check what's actually in the AR.js file
+    fetch('vendor/arjs-nft-official.js')
+      .then(function(r) { return r.text(); })
+      .then(function(text) {
+        var matches = text.match(/registerComponent\(['"]([^'"]+)['"]/g) || [];
+        log('AR.js registers: ' + matches.slice(0,10).join(', '), 'info');
+        log('Contains nft string: ' + text.includes('"nft"'), 'info');
+        log('Contains a-nft string: ' + text.includes('a-nft'), 'info');
+      });
+
     // Listen for arjs-nft-loaded global event
     window.addEventListener('arjs-nft-loaded', function(ev) { log('arjs-nft-loaded event: ' + JSON.stringify(ev.detail), 'info'); });
 
