@@ -172,13 +172,15 @@
     });
 
     // Check what's actually in the AR.js file
-    fetch('vendor/arjs-nft-official.js')
+        fetch('vendor/arjs-nft-official.js')
       .then(function(r) { return r.text(); })
       .then(function(text) {
-        var matches = text.match(/registerComponent\(['"]([^'"]+)['"]/g) || [];
-        log('AR.js registers: ' + matches.slice(0,10).join(', '), 'info');
-        log('Contains nft string: ' + text.includes('"nft"'), 'info');
-        log('Contains a-nft string: ' + text.includes('a-nft'), 'info');
+        // Find how a-nft primitive is defined
+        var anftIdx = text.indexOf('a-nft');
+        log('a-nft context: ' + text.slice(anftIdx, anftIdx + 200), 'info');
+        // Find nft component definition
+        var nftIdx = text.indexOf('"nft"');
+        log('nft string context: ' + text.slice(nftIdx, nftIdx + 200), 'info');
       });
 
     // Listen for arjs-nft-loaded global event
