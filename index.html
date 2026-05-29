@@ -119,19 +119,19 @@
         position="0 0 0.001" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
-        material="shader: flat; transparent: true; alphaTest: 0.1; side: double; opacity: 1;">
+        material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer-pink-img"   id="layer-pink"
         position="0 0 0.002" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
-        material="shader: flat; transparent: true; alphaTest: 0.1; side: double; opacity: 1;">
+        material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer-purple-img" id="layer-purple"
         position="0 0 0.003" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
-        material="shader: flat; transparent: true; alphaTest: 0.1; side: double; opacity: 1;">
+        material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
     </a-entity>
 
@@ -198,44 +198,6 @@
     });
   </script>
 
-  <script>
-    // ── Pinch-to-zoom on AR target ──
-    var currentScale = 1;
-    var lastDistance = null;
 
-    function getPinchDistance(e) {
-      var dx = e.touches[0].clientX - e.touches[1].clientX;
-      var dy = e.touches[0].clientY - e.touches[1].clientY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    // Pinch zoom via hammer.js-style manual detection on window
-    window.addEventListener('touchstart', function(e) {
-      if (e.touches.length === 2) {
-        lastDistance = getPinchDistance(e);
-      }
-    }, { passive: true });
-
-    window.addEventListener('touchmove', function(e) {
-      if (e.touches.length === 2) {
-        var dist = getPinchDistance(e);
-        if (lastDistance) {
-          var delta = dist / lastDistance;
-          currentScale = Math.min(Math.max(currentScale * delta, 0.5), 4);
-          var target = document.getElementById('ar-target');
-          if (target) {
-            target.setAttribute('scale', currentScale + ' ' + currentScale + ' ' + currentScale);
-          }
-        }
-        lastDistance = dist;
-      }
-    }, { passive: true });
-
-    window.addEventListener('touchend', function(e) {
-      if (e.touches.length < 2) lastDistance = null;
-    }, { passive: true });
-
-    log('Pinch zoom ready ✓', 'info');
-  </script>
 </body>
 </html>
