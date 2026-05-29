@@ -1,51 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WebAR Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Green Port 2050 – WebAR Layers</title>
   <script src="vendor/aframe-160.min.js"></script>
-  <script src="vendor/arjs-standard.min.js"></script>
+  <script src="vendor/arjs-nft.min.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #111; overflow: hidden; touch-action: none; }
+
+    #debug-panel {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      background: rgba(0,0,0,0.85); color: #0f0; font-family: monospace;
+      font-size: 11px; line-height: 1.5; padding: 6px 10px;
+      max-height: 40vh; overflow-y: auto; border-bottom: 1px solid #333;
+    }
+    #debug-panel .d-err  { color: #ff5f5f; }
+    #debug-panel .d-warn { color: #ffd166; }
+    #debug-panel .d-info { color: #06d6a0; }
+    #debug-panel .d-log  { color: #aaa; }
+    #debug-toggle {
+      position: fixed; top: 6px; right: 8px; z-index: 10000;
+      background: rgba(0,0,0,0.7); border: 1px solid #444; border-radius: 6px;
+      color: #0f0; font-size: 11px; padding: 3px 8px; cursor: pointer;
+    }
     #hud {
-      position: fixed; bottom: 20px; left: 0; right: 0;
-      z-index: 999; display: flex; gap: 8px;
-      justify-content: center; flex-wrap: wrap; padding: 0 12px;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
+      padding: 12px 12px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
     }
-    .btn {
-      padding: 12px 20px; border-radius: 30px; border: 2px solid white;
-      background: rgba(0,0,0,0.5); color: white; font-size: 14px;
-      font-weight: bold; cursor: pointer;
+    #status { color: rgba(255,255,255,0.7); font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+    #buttons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .layer-btn {
+      border: 2px solid rgba(255,255,255,0.25); border-radius: 40px;
+      padding: 10px 18px; font-size: 13px; font-weight: 600;
+      cursor: pointer; color: white; background: rgba(255,255,255,0.08);
     }
-    .btn.on { background: rgba(255,255,255,0.3); }
+    .layer-btn.active { border-color: var(--col); background: rgba(255,255,255,0.2); box-shadow: 0 0 14px var(--col); }
+    #btn-green  { --col: #4ade80; }
+    #btn-pink   { --col: #f472b6; }
+    #btn-purple { --col: #c084fc; }
+    #scan-hint {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      z-index: 9997; text-align: center; pointer-events: none; transition: opacity 0.5s;
+    }
+    #scan-hint.hidden { opacity: 0; }
+    .scan-ring {
+      width: 160px; height: 160px; border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 20px; margin: 0 auto 12px; animation: scanPulse 2s ease-in-out infinite;
+    }
+    @keyframes scanPulse { 0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.04);} }
+    #scan-hint p { color: rgba(255,255,255,0.8); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
+    #info-panel {
+      position: fixed; top: 20px; right: 12px; z-index: 9998;
+      background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; padding: 10px 14px; color: white; font-size: 12px;
+      line-height: 1.6; opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    #info-panel.visible { opacity: 1; }
+    .dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: #4ade80; margin-right: 5px; animation: pulse 1.4s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.3;} }
   </style>
 </head>
 <body>
 
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-    <a-marker preset="hiro" id="marker" emitevents="true" smooth="true">
-      <a-plane id="layer-green"  src="Dia2.PNG" width="3.58" height="2" position="0 0 0.01"  rotation="-90 0 0" visible="false" material="transparent:true; alphaTest:0.05; side:double;"></a-plane>
-      <a-plane id="layer-pink"   src="Dia3.PNG" width="3.58" height="2" position="0 0 0.02"  rotation="-90 0 0" visible="false" material="transparent:true; alphaTest:0.05; side:double;"></a-plane>
-      <a-plane id="layer-purple" src="Dia4.PNG" width="3.58" height="2" position="0 0 0.03"  rotation="-90 0 0" visible="false" material="transparent:true; alphaTest:0.05; side:double;"></a-plane>
-    </a-marker>
+  <div id="debug-panel"></div>
+  <button id="debug-toggle" onclick="toggleDebug()">▲ hide log</button>
+
+  <div id="scan-hint">
+    <div class="scan-ring"></div>
+    <p>Point at the poster</p>
+  </div>
+
+  <div id="info-panel">
+    <span class="dot"></span> Poster detected<br>
+    <span style="color:rgba(255,255,255,0.5);font-size:11px;">Tap layers to reveal</span>
+  </div>
+
+  <div id="hud">
+    <div id="status">Initialising…</div>
+    <div id="buttons">
+      <button class="layer-btn" id="btn-green"  onclick="toggleLayer('green')">🟢 Layer 1</button>
+      <button class="layer-btn" id="btn-pink"   onclick="toggleLayer('pink')">🩷 Layer 2</button>
+      <button class="layer-btn" id="btn-purple" onclick="toggleLayer('purple')">🟣 Layer 3</button>
+    </div>
+  </div>
+
+  <a-scene
+    vr-mode-ui="enabled: false"
+    renderer="logarithmicDepthBuffer: true; precision: medium; alpha: true;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+
+    <a-nft
+      id="ar-target"
+      type="nft"
+      url="assets/poster"
+      smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
+      emitevents="true">
+
+      <a-plane id="layer-green"  src="Dia2.PNG" width="3.58" height="2" position="0 0 0.01" rotation="-90 0 0" visible="false" material="transparent:true;alphaTest:0.05;side:double;"></a-plane>
+      <a-plane id="layer-pink"   src="Dia3.PNG" width="3.58" height="2" position="0 0 0.02" rotation="-90 0 0" visible="false" material="transparent:true;alphaTest:0.05;side:double;"></a-plane>
+      <a-plane id="layer-purple" src="Dia4.PNG" width="3.58" height="2" position="0 0 0.03" rotation="-90 0 0" visible="false" material="transparent:true;alphaTest:0.05;side:double;"></a-plane>
+
+    </a-nft>
+
     <a-entity camera></a-entity>
   </a-scene>
 
-  <div id="hud">
-    <button class="btn" onclick="toggle('green')">🟢 Layer 1</button>
-    <button class="btn" onclick="toggle('pink')">🩷 Layer 2</button>
-    <button class="btn" onclick="toggle('purple')">🟣 Layer 3</button>
-  </div>
-
   <script>
-    var layers = { green: false, pink: false, purple: false };
+    // ── Debug console ──
+    var dbg = document.getElementById('debug-panel');
+    var debugVisible = true;
 
-    function toggle(name) {
-      layers[name] = !layers[name];
-      document.getElementById('layer-' + name).setAttribute('visible', layers[name]);
-      event.target.classList.toggle('on', layers[name]);
+    function toggleDebug() {
+      debugVisible = !debugVisible;
+      dbg.style.display = debugVisible ? 'block' : 'none';
+      document.getElementById('debug-toggle').textContent = debugVisible ? '▲ hide log' : '▼ show log';
     }
+
+    function log(msg, type) {
+      type = type || 'log';
+      var line = document.createElement('div');
+      line.className = 'd-' + type;
+      line.textContent = '[' + new Date().toTimeString().slice(0,8) + '] ' + msg;
+      dbg.appendChild(line);
+      dbg.scrollTop = dbg.scrollHeight;
+    }
+
+    window.onerror = function(msg, src, ln) { log('ERROR: ' + msg + ' (line ' + ln + ')', 'err'); };
+
+    log('Page loaded', 'info');
+    log('Protocol: ' + location.protocol, location.protocol === 'https:' ? 'info' : 'err');
+    log('AFRAME defined: ' + (typeof AFRAME !== 'undefined'), typeof AFRAME !== 'undefined' ? 'info' : 'err');
+
+    // Check NFT files
+    ['assets/poster.fset', 'assets/poster.fset3', 'assets/poster.iset'].forEach(function(path) {
+      fetch(path)
+        .then(function(r) { log(path + ' → ' + r.status, r.ok ? 'info' : 'err'); })
+        .catch(function(e) { log(path + ' → ERROR: ' + e.message, 'err'); });
+    });
+
+    // ── Layer toggles ──
+    var layerMap = { green: 'layer-green', pink: 'layer-pink', purple: 'layer-purple' };
+    var state = { green: false, pink: false, purple: false };
+
+    function toggleLayer(name) {
+      state[name] = !state[name];
+      var el = document.getElementById(layerMap[name]);
+      if (el) el.setAttribute('visible', state[name]);
+      var btn = document.getElementById('btn-' + name);
+      if (btn) btn.classList.toggle('active', state[name]);
+      log('Layer ' + name + ': ' + (state[name] ? 'ON' : 'OFF'), 'info');
+    }
+
+    // ── Scene and tracking events ──
+    var scene     = document.querySelector('a-scene');
+    var target    = document.getElementById('ar-target');
+    var statusEl  = document.getElementById('status');
+    var hint      = document.getElementById('scan-hint');
+    var infoPanel = document.getElementById('info-panel');
+
+    scene.addEventListener('loaded', function() {
+      log('A-Frame scene loaded ✓', 'info');
+      statusEl.textContent = 'Point at the poster…';
+    });
+
+    target.addEventListener('targetFound', function() {
+      log('Poster FOUND ✓', 'info');
+      statusEl.textContent = '✓ Poster detected – tap layers';
+      hint.classList.add('hidden');
+      infoPanel.classList.add('visible');
+    });
+
+    target.addEventListener('targetLost', function() {
+      log('Poster lost', 'warn');
+      statusEl.textContent = 'Point at the poster…';
+      hint.classList.remove('hidden');
+      infoPanel.classList.remove('visible');
+    });
   </script>
 </body>
 </html>
