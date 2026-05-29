@@ -100,7 +100,7 @@
     <a-nft
       id="ar-target"
       type="nft"
-      url="assets/poster"
+      url="assets/oneill"
       smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5"
       emitevents="true">
 
@@ -140,7 +140,7 @@
     log('AFRAME defined: ' + (typeof AFRAME !== 'undefined'), typeof AFRAME !== 'undefined' ? 'info' : 'err');
 
     // Check NFT files
-    ['assets/poster.fset', 'assets/poster.fset3', 'assets/poster.iset'].forEach(function(path) {
+    ['assets/oneill.fset', 'assets/oneill.fset3', 'assets/oneill.iset'].forEach(function(path) {
       fetch(path)
         .then(function(r) { log(path + ' → ' + r.status, r.ok ? 'info' : 'err'); })
         .catch(function(e) { log(path + ' → ERROR: ' + e.message, 'err'); });
