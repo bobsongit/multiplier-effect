@@ -16,17 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download exact library versions used in official AR.js examples
+      - name: Download library files
         run: |
           mkdir -p vendor
 
-          # Exact A-Frame commit used in all official AR.js NFT examples
-          curl -L "https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js" -o vendor/aframe-arjs.min.js
+          # A-Frame 1.5.0 - recommended for MindAR
+          curl -L "https://aframe.io/releases/1.5.0/aframe.min.js" -o vendor/aframe-arjs.min.js
           echo "aframe size: $(wc -c < vendor/aframe-arjs.min.js)"
 
-          # AR.js NFT build from master
-          curl -L "https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js" -o vendor/arjs-nft-official.js
-          echo "arjs size: $(wc -c < vendor/arjs-nft-official.js)"
+          # MindAR image tracking with A-Frame
+          curl -L "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js" -o vendor/mindar-image-aframe.js
+          echo "mindar size: $(wc -c < vendor/mindar-image-aframe.js)"
 
           ls -lh vendor/
 
@@ -38,6 +38,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto: add official AR.js example scripts"
+            git commit -m "Auto: add MindAR vendor files"
             git push origin main
           fi
