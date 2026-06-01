@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Green Port 2050 – WebAR Layers</title>
+  <title>Adyen AR Proof of Concept</title>
   <script src="vendor/aframe-arjs.min.js"></script>
   <script src="vendor/mindar-image-aframe.js"></script>
   <style>
@@ -77,8 +77,8 @@
 </head>
 <body>
 
-  <div id="debug-panel"></div>
-  <button id="debug-toggle" onclick="toggleDebug()">▲ hide log</button>
+  <div id="debug-panel" style="display:none;"></div>
+  <button id="debug-toggle" onclick="toggleDebug()">▼ show log</button>
 
   <div id="scan-hint">
     <div class="scan-ring"></div>
@@ -93,9 +93,10 @@
   <div id="hud">
     <div id="status">Initialising…</div>
     <div id="buttons">
-      <button class="layer-btn" id="btn-green"  onclick="toggleLayer('green')">🟢 Layer 1</button>
-      <button class="layer-btn" id="btn-pink"   onclick="toggleLayer('pink')">🩷 Layer 2</button>
-      <button class="layer-btn" id="btn-purple" onclick="toggleLayer('purple')">🟣 Layer 3</button>
+      <button class="layer-btn" id="btn-layer1" onclick="toggleLayer('layer1')">1️⃣ Layer 1</button>
+      <button class="layer-btn" id="btn-layer2" onclick="toggleLayer('layer2')">2️⃣ Layer 2</button>
+      <button class="layer-btn" id="btn-layer3" onclick="toggleLayer('layer3')">3️⃣ Layer 3</button>
+      <button class="layer-btn" id="btn-layer4" onclick="toggleLayer('layer4')">4️⃣ Layer 4</button>
     </div>
   </div>
 
@@ -107,28 +108,35 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <img id="layer-green-img"  src="Dia2.PNG" />
-      <img id="layer-pink-img"   src="Dia3.PNG" />
-      <img id="layer-purple-img" src="Dia4.PNG" />
+      <img id="layer1-img" src="layer1.png" />
+      <img id="layer2-img" src="layer2.png" />
+      <img id="layer3-img" src="layer3.png" />
+      <img id="layer4-img" src="layer4.png" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
-      <a-plane src="#layer-green-img"  id="layer-green"
+      <a-plane src="#layer1-img" id="layer1"
         position="0 0 0.001" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
-      <a-plane src="#layer-pink-img"   id="layer-pink"
+      <a-plane src="#layer2-img" id="layer2"
         position="0 0 0.002" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
-      <a-plane src="#layer-purple-img" id="layer-purple"
+      <a-plane src="#layer3-img" id="layer3"
         position="0 0 0.003" rotation="0 0 0"
+        width="1" height="0.559"
+        visible="false"
+        material="transparent: true; alphaTest: 0.05; side: double;">
+      </a-plane>
+      <a-plane src="#layer4-img" id="layer4"
+        position="0 0 0.004" rotation="0 0 0"
         width="1" height="0.559"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
@@ -139,7 +147,7 @@
 
   <script>
     var dbg = document.getElementById('debug-panel');
-    var debugVisible = true;
+    var debugVisible = false;
 
     function toggleDebug() {
       debugVisible = !debugVisible;
@@ -161,8 +169,8 @@
     log('Page loaded', 'info');
     log('Protocol: ' + location.protocol, location.protocol === 'https:' ? 'info' : 'err');
 
-    var layerMap = { green: 'layer-green', pink: 'layer-pink', purple: 'layer-purple' };
-    var state = { green: false, pink: false, purple: false };
+    var layerMap = { layer1: 'layer1', layer2: 'layer2', layer3: 'layer3', layer4: 'layer4' };
+    var state = { layer1: false, layer2: false, layer3: false, layer4: false };
 
     function toggleLayer(name) {
       state[name] = !state[name];
