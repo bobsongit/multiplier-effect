@@ -101,7 +101,7 @@
   </div>
 
   <a-scene
-    mindar-image="imageTargetSrc: assets/targets.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no;"
+    mindar-image="imageTargetSrc: assets/targets.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.001; filterBeta: 0.001;"
     color-space="sRGB"
     renderer="colorManagement: false; physicallyCorrectLights: false;"
     vr-mode-ui="enabled: false"
@@ -119,25 +119,25 @@
     <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
       <a-plane src="#layer1-img" id="layer1"
         position="0 0 0.001" rotation="0 0 0"
-        width="1" height="0.559"
+        width="1" height="0.450"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer2-img" id="layer2"
         position="0 0 0.002" rotation="0 0 0"
-        width="1" height="0.559"
+        width="1" height="0.450"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer3-img" id="layer3"
         position="0 0 0.003" rotation="0 0 0"
-        width="1" height="0.559"
+        width="1" height="0.450"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer4-img" id="layer4"
         position="0 0 0.004" rotation="0 0 0"
-        width="1" height="0.559"
+        width="1" height="0.450"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
