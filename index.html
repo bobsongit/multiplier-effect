@@ -77,10 +77,12 @@
 </head>
 <body>
 
-  <div id="portrait-warning" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:99999; background:rgba(0,0,0,0.92); flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
-    <div style="font-size:48px; margin-bottom:20px;">🔄</div>
-    <div style="color:white; font-size:20px; font-weight:600; margin-bottom:10px;">Please rotate your device</div>
-    <div style="color:rgba(255,255,255,0.6); font-size:14px;">This experience works in landscape mode only</div>
+  <div id="onboarding" style="display:flex; position:fixed; top:0; left:0; right:0; bottom:0; z-index:99999; background:#0a0a0a; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px;">
+    <div style="font-size:56px; margin-bottom:24px;">📱</div>
+    <div style="color:#00cc66; font-size:22px; font-weight:700; margin-bottom:12px; font-family:sans-serif;">Adyen Impact</div>
+    <div style="color:white; font-size:16px; font-weight:600; margin-bottom:8px; font-family:sans-serif;">Keep your phone in portrait mode</div>
+    <div style="color:rgba(255,255,255,0.6); font-size:14px; line-height:1.6; margin-bottom:32px; font-family:sans-serif;">Point your camera at the<br>Multiplier Effect poster</div>
+    <button onclick="document.getElementById('onboarding').style.display='none';" style="background:#00cc66; color:#000; border:none; border-radius:30px; padding:14px 32px; font-size:16px; font-weight:700; cursor:pointer; font-family:sans-serif;">Start experience</button>
   </div>
 
   <div id="debug-panel" style="display:none;"></div>
