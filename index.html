@@ -99,25 +99,25 @@
   <div id="hud">
     <div id="status">Initialising…</div>
     <div id="buttons">
-      <button class="layer-btn" id="btn-layer1" onclick="toggleLayer('layer1')">1️⃣ Layer 1</button>
-      <button class="layer-btn" id="btn-layer2" onclick="toggleLayer('layer2')">2️⃣ Layer 2</button>
-      <button class="layer-btn" id="btn-layer3" onclick="toggleLayer('layer3')">3️⃣ Layer 3</button>
-      <button class="layer-btn" id="btn-layer4" onclick="toggleLayer('layer4')">4️⃣ Layer 4</button>
+      <button class="layer-btn" id="btn-layer1" onclick="toggleLayer('layer1')">Step 1</button>
+      <button class="layer-btn" id="btn-layer2" onclick="toggleLayer('layer2')">Step 2</button>
+      <button class="layer-btn" id="btn-layer3" onclick="toggleLayer('layer3')">Step 3</button>
+      <button class="layer-btn" id="btn-layer4" onclick="toggleLayer('layer4')">Step 4</button>
     </div>
   </div>
 
   <a-scene
-    mindar-image="imageTargetSrc: assets/targets.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.001; filterBeta: 0.001;"
+    mindar-image="imageTargetSrc: assets/targets.mind; autoStart: true; uiLoading: no; uiError: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.0001; missTolerance: 10; warmupTolerance: 10;"
     color-space="sRGB"
     renderer="colorManagement: false; physicallyCorrectLights: false;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <img id="layer1-img" src="1.png" />
-      <img id="layer2-img" src="2.png" />
-      <img id="layer3-img" src="3.png" />
-      <img id="layer4-img" src="4.png" />
+      <img id="layer1-img" src="1.webp" />
+      <img id="layer2-img" src="2.webp" />
+      <img id="layer3-img" src="3.webp" />
+      <img id="layer4-img" src="4.webp" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
