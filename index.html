@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Adyen AR Proof of Concept</title>
+  <title>Adyen Impact</title>
   <script src="vendor/aframe-arjs.min.js"></script>
   <script src="vendor/mindar-image-aframe.js"></script>
   <style>
@@ -77,6 +77,12 @@
 </head>
 <body>
 
+  <div id="portrait-warning" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:99999; background:rgba(0,0,0,0.92); flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
+    <div style="font-size:48px; margin-bottom:20px;">🔄</div>
+    <div style="color:white; font-size:20px; font-weight:600; margin-bottom:10px;">Please rotate your device</div>
+    <div style="color:rgba(255,255,255,0.6); font-size:14px;">This experience works in landscape mode only</div>
+  </div>
+
   <div id="debug-panel" style="display:none;"></div>
   <button id="debug-toggle" onclick="toggleDebug()">▼ show log</button>
 
@@ -119,25 +125,25 @@
     <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
       <a-plane src="#layer1-img" id="layer1"
         position="0 0 0.001" rotation="0 0 0"
-        width="1" height="0.450"
+        width="0.9" height="0.405"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer2-img" id="layer2"
         position="0 0 0.002" rotation="0 0 0"
-        width="1" height="0.450"
+        width="0.9" height="0.405"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer3-img" id="layer3"
         position="0 0 0.003" rotation="0 0 0"
-        width="1" height="0.450"
+        width="0.9" height="0.405"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
       <a-plane src="#layer4-img" id="layer4"
         position="0 0 0.004" rotation="0 0 0"
-        width="1" height="0.450"
+        width="0.9" height="0.405"
         visible="false"
         material="transparent: true; alphaTest: 0.05; side: double;">
       </a-plane>
